@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Build & Cache
+.next/
+out/
+dist/
+coverage/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Environment files
+.env
+.env.local
+!.env.example
+
+# Logs
+*.log
+
+# Runtime & Data
+workspace/
+pgdata/
+
+# Operating System
+.DS_Store
+Thumbs.db
