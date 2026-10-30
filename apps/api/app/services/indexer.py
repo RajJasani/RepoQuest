@@ -19,6 +19,7 @@ from app.providers.base import LLMProvider
 from app.providers.factory import get_provider
 from app.services.archive import extract_tarball_safely
 from app.services.chunker import chunk_file, compute_content_hash
+from app.services.explorer import ExplorerService
 from app.services.github import GitHubClient
 from app.services.techdetect import (
     detect_languages_from_files,
@@ -353,6 +354,13 @@ class IndexerService:
                             pass
 
                 repo.run_instructions = extract_run_instructions(readme_content=readme_text, manifests=manifests)
+
+                # Build architecture module graph and module summaries
+                try:
+                    explorer_svc = ExplorerService(provider=llm_provider)
+                    await explorer_svc.build_and_save_module_graph(session, repo, dest_dir)
+                except Exception as exc:
+                    logger.warning("Failed to build module graph for %s: %s", repo.full_name, exc)
 
                 # Stage 6: ready
                 repo.status = "ready"

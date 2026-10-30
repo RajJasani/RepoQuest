@@ -6,6 +6,14 @@ from app.schemas.chat import (
     ChatSessionResponse,
     CitationItem,
 )
+from app.schemas.explorer import (
+    ArchitectureEdge,
+    ArchitectureNode,
+    ArchitectureResponse,
+    ModuleDetailResponse,
+    ModuleNeighbors,
+    NeighborNode,
+)
 from app.schemas.llm import (
     Duplicate,
     FileComment,
@@ -32,6 +40,9 @@ from app.schemas.settings import (
 )
 
 __all__ = [
+    "ArchitectureEdge",
+    "ArchitectureNode",
+    "ArchitectureResponse",
     "ChatMessageCreateRequest",
     "ChatMessageResponse",
     "ChatSessionCreateRequest",
@@ -43,6 +54,9 @@ __all__ = [
     "FileContentResponse",
     "FileReview",
     "IssueBrief",
+    "ModuleDetailResponse",
+    "ModuleNeighbors",
+    "NeighborNode",
     "OnboardingPath",
     "OnboardingStep",
     "PRReview",
