@@ -10,9 +10,26 @@ from app.models.core import (
     Repository,
     Setting,
 )
+from app.models.features import (
+    BenchmarkRun,
+    ChatMessage,
+    ChatSession,
+    Digest,
+    HealthSnapshot,
+    Issue,
+    IssueAnalysis,
+    OnboardingPath,
+    OnboardingProgress,
+    OnboardingStep,
+    PRReview,
+    PullRequest,
+    SpamAssessment,
+    WebhookDelivery,
+)
 
 __all__ = [
     "Base",
+    # Core 9
     "Setting",
     "Profile",
     "Repository",
@@ -22,4 +39,19 @@ __all__ = [
     "ModuleEdge",
     "Job",
     "AuditLog",
+    # Remaining 14
+    "Issue",
+    "IssueAnalysis",
+    "PullRequest",
+    "PRReview",
+    "SpamAssessment",
+    "ChatSession",
+    "ChatMessage",
+    "OnboardingPath",
+    "OnboardingStep",
+    "OnboardingProgress",
+    "BenchmarkRun",
+    "HealthSnapshot",
+    "Digest",
+    "WebhookDelivery",
 ]
