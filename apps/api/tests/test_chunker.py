@@ -104,3 +104,4 @@ def test_syntax_error_python_fallback():
     assert len(chunks) >= 1
     assert "broken_function" in chunks[0].content
     assert chunks[0].start_line == 1
+

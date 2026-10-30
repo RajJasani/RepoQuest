@@ -152,3 +152,4 @@ def test_extract_run_instructions_from_manifests_fallback():
     # Fallback to requirements.txt
     inst_py = extract_run_instructions(readme_content=None, manifests={"requirements.txt": "fastapi"})
     assert "pip install" in inst_py
+

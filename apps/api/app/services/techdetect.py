@@ -270,3 +270,4 @@ def extract_run_instructions(
                 return "mvn clean install\nmvn spring-boot:run"
 
     return "Refer to project documentation for run instructions."
+
