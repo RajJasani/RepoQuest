@@ -1,3 +1,11 @@
+from app.schemas.chat import (
+    ChatMessageCreateRequest,
+    ChatMessageResponse,
+    ChatSessionCreateRequest,
+    ChatSessionDetailResponse,
+    ChatSessionResponse,
+    CitationItem,
+)
 from app.schemas.llm import (
     Duplicate,
     FileComment,
@@ -24,6 +32,12 @@ from app.schemas.settings import (
 )
 
 __all__ = [
+    "ChatMessageCreateRequest",
+    "ChatMessageResponse",
+    "ChatSessionCreateRequest",
+    "ChatSessionDetailResponse",
+    "ChatSessionResponse",
+    "CitationItem",
     "Duplicate",
     "FileComment",
     "FileContentResponse",
