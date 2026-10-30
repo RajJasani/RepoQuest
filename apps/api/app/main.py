@@ -7,7 +7,7 @@ from app.core.config import get_settings
 from app.core.errors import register_error_handlers
 from app.core.logging import RequestIDMiddleware, setup_logging
 from app.core.startup import run_startup
-from app.routers import chat, explorer, issues, repos, settings, system
+from app.routers import chat, explorer, issues, prs, repos, settings, system
 from app.worker import start_worker, stop_worker
 
 
@@ -56,6 +56,7 @@ def create_app() -> FastAPI:
     api_v1_router.include_router(chat.router)
     api_v1_router.include_router(explorer.router)
     api_v1_router.include_router(issues.router)
+    api_v1_router.include_router(prs.router)
     app.include_router(api_v1_router)
 
     return app

@@ -53,3 +53,4 @@ async def record_audit(
         logger.warning("Failed to flush audit log entry: %s", exc)
 
     return entry
+

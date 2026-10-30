@@ -35,6 +35,14 @@ from app.schemas.llm import (
     SpamLLMResult,
     TriageResult,
 )
+from app.schemas.prs import (
+    PRDetailResponse,
+    PRListResponse,
+    PRPostReviewResponse,
+    PRReviewResponse,
+    PRSyncResponse,
+    SpamAssessmentResponse,
+)
 from app.schemas.repos import (
     FileContentResponse,
     RepoCreateRequest,
@@ -75,7 +83,12 @@ __all__ = [
     "NeighborNode",
     "OnboardingPath",
     "OnboardingStep",
+    "PRDetailResponse",
+    "PRListResponse",
+    "PRPostReviewResponse",
     "PRReview",
+    "PRReviewResponse",
+    "PRSyncResponse",
     "QuizQuestion",
     "RepoCreateRequest",
     "RepoCreateResponse",
@@ -83,6 +96,7 @@ __all__ = [
     "RepoSummaryResponse",
     "SettingsResponse",
     "SettingsUpdateRequest",
+    "SpamAssessmentResponse",
     "SpamLLMResult",
     "TreeNode",
     "TriageResult",

@@ -10,3 +10,4 @@
   - Allowed repository labels are fetched from GitHub via `GET /repos/{owner}/{repo}/labels` during `POST /repos/{id}/issues/sync` (and initial indexing) and persisted in `repositories.labels`.
   - Triage logic and API endpoints can perform in-memory label whitelisting without issuing redundant outbound requests to GitHub on every triage run.
   - The database design remains simple and avoids an extra join table for labels in v1.
+
