@@ -15,3 +15,4 @@ def sanitize_user_input(username: str) -> Optional[str]:
 def format_user_badge(user: User) -> str:
     """Returns a visual string badge for user profile."""
     return f"@{user.username} (#{user.id})"
+

@@ -1,0 +1,268 @@
+{
+  "labels": [
+    "bug",
+    "enhancement",
+    "documentation",
+    "good-first-issue",
+    "help wanted",
+    "question",
+    "chore",
+    "security",
+    "duplicate",
+    "invalid",
+    "ui",
+    "api"
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "title": "Database locked error when creating tasks simultaneously",
+      "body": "When two requests create tasks at the exact same moment, SQLite raises OperationalError: database is locked in db/session.py.",
+      "author": "alex_dev",
+      "labels": ["bug"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/1",
+      "created_at": "2026-10-25T10:00:00Z"
+    },
+    {
+      "number": 2,
+      "title": "SQLite database is locked during concurrent task creation",
+      "body": "Creating tasks concurrently causes SQLite OperationalError: database is locked in get_db_connection() when accessed from multiple threads.",
+      "author": "maria_k",
+      "labels": ["bug", "duplicate"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/2",
+      "created_at": "2026-10-25T11:30:00Z"
+    },
+    {
+      "number": 3,
+      "title": "User registration fails with 500 error when email is duplicate",
+      "body": "Registering a user with an existing email throws an uncaught sqlite3.IntegrityError: UNIQUE constraint failed: users.email instead of returning 400 Bad Request.",
+      "author": "kenji_s",
+      "labels": ["bug", "api"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/3",
+      "created_at": "2026-10-25T14:15:00Z"
+    },
+    {
+      "number": 4,
+      "title": "IntegrityError crash on duplicate email during user signup",
+      "body": "When signing up with an already registered email address, the API crashes with sqlite3.IntegrityError on users.email instead of handling validation cleanly.",
+      "author": "elena_r",
+      "labels": ["bug", "duplicate", "api"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/4",
+      "created_at": "2026-10-25T16:00:00Z"
+    },
+    {
+      "number": 5,
+      "title": "Unique constraint failure when registering existing user email",
+      "body": "Auth service crashes with UNIQUE constraint failed: users.email when signing up with an email that is already in the database.",
+      "author": "liam_t",
+      "labels": ["bug", "duplicate"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/5",
+      "created_at": "2026-10-25T18:45:00Z"
+    },
+    {
+      "number": 6,
+      "title": "Doesn't work",
+      "body": "The app is completely broken for me, please fix.",
+      "author": "random_user1",
+      "labels": ["bug"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/6",
+      "created_at": "2026-10-26T08:00:00Z"
+    },
+    {
+      "number": 7,
+      "title": "Error on page",
+      "body": "I clicked something and it gave me an error. What do I do?",
+      "author": "random_user2",
+      "labels": ["question"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/7",
+      "created_at": "2026-10-26T09:20:00Z"
+    },
+    {
+      "number": 8,
+      "title": "Backend slow",
+      "body": "Requests seem very slow on my machine.",
+      "author": "random_user3",
+      "labels": ["bug"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/8",
+      "created_at": "2026-10-26T10:10:00Z"
+    },
+    {
+      "number": 9,
+      "title": "Task problem",
+      "body": "Something is wrong with my tasks board.",
+      "author": "random_user4",
+      "labels": ["bug"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/9",
+      "created_at": "2026-10-26T11:45:00Z"
+    },
+    {
+      "number": 10,
+      "title": "Auth not working",
+      "body": "Cannot log in or do anything on the site.",
+      "author": "random_user5",
+      "labels": ["bug"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/10",
+      "created_at": "2026-10-26T13:00:00Z"
+    },
+    {
+      "number": 11,
+      "title": "Task status failed to update in UI",
+      "body": "I tried changing a task to completed but it didn't save. It just stayed in backlog. No console errors provided.",
+      "author": "jordan_m",
+      "labels": ["bug", "ui"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/11",
+      "created_at": "2026-10-27T07:30:00Z"
+    },
+    {
+      "number": 12,
+      "title": "Password verification returns false for valid password",
+      "body": "My password was rejected when I tried to log in today. I know the password was right. Please check the hashing logic.",
+      "author": "samantha_b",
+      "labels": ["bug"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/12",
+      "created_at": "2026-10-27T09:15:00Z"
+    },
+    {
+      "number": 13,
+      "title": "API returns 400 Bad Request",
+      "body": "One of the task endpoints returned a 400 status code when sending a payload, but the message was unclear.",
+      "author": "carlos_g",
+      "labels": ["bug", "api"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/13",
+      "created_at": "2026-10-27T11:00:00Z"
+    },
+    {
+      "number": 14,
+      "title": "Add .gitignore to prevent committing taskboard.db",
+      "body": "Currently taskboard.db can accidentally be committed to git. Add taskboard.db, *.pyc, and __pycache__/ to a root .gitignore file.",
+      "author": "priya_n",
+      "labels": ["good-first-issue", "chore"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/14",
+      "created_at": "2026-10-27T14:00:00Z"
+    },
+    {
+      "number": 15,
+      "title": "Fix typo in README run instructions",
+      "body": "In README.md, update 'Initialise Database' to 'Initialize Database' to match American English conventions used in the codebase.",
+      "author": "tariq_h",
+      "labels": ["good-first-issue", "documentation"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/15",
+      "created_at": "2026-10-27T16:20:00Z"
+    },
+    {
+      "number": 16,
+      "title": "Add trim to task title input in client/app.js",
+      "body": "In client/app.js, task titles with leading or trailing whitespace should be trimmed with .trim() before sending to createTask.",
+      "author": "anna_w",
+      "labels": ["good-first-issue", "ui"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/16",
+      "created_at": "2026-10-27T18:00:00Z"
+    },
+    {
+      "number": 17,
+      "title": "Export version string in config.py",
+      "body": "Add __version__ = '1.0.0' to config.py so the CLI and server modules can report the current version consistently.",
+      "author": "devin_c",
+      "labels": ["good-first-issue", "enhancement"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/17",
+      "created_at": "2026-10-28T09:00:00Z"
+    },
+    {
+      "number": 18,
+      "title": "FREE CRYPTO AIRDROP CLICK HERE NOW $$$",
+      "body": "Visit http://spam-site-example.xyz to claim 10000 free tokens! Best offer 2026! Guaranteed rewards!",
+      "author": "spambot999",
+      "labels": ["invalid"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/18",
+      "created_at": "2026-10-28T10:00:00Z"
+    },
+    {
+      "number": 19,
+      "title": "Support task priority levels (low, medium, high)",
+      "body": "It would be great to add a priority field to the tasks table and allow sorting the board columns by priority level.",
+      "author": "zoe_f",
+      "labels": ["enhancement"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/19",
+      "created_at": "2026-10-28T11:30:00Z"
+    },
+    {
+      "number": 20,
+      "title": "CLI list-tasks command does not filter by status",
+      "body": "Currently python cli.py list-tasks lists all tasks. Add an optional status argument to filter by backlog, in_progress, or completed.",
+      "author": "george_p",
+      "labels": ["enhancement"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/20",
+      "created_at": "2026-10-28T14:00:00Z"
+    },
+    {
+      "number": 21,
+      "title": "Add CORS headers to all API route responses",
+      "body": "When serving the client from a different port, the browser blocks requests. Ensure Access-Control-Allow-Origin header is present on all API handlers.",
+      "author": "hannah_k",
+      "labels": ["bug", "api"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/21",
+      "created_at": "2026-10-28T16:15:00Z"
+    },
+    {
+      "number": 22,
+      "title": "How to run TaskBoard with PostgreSQL instead of SQLite?",
+      "body": "Is it possible to configure a remote PostgreSQL database connection string via environment variables for multi-user deployment?",
+      "author": "victor_b",
+      "labels": ["question"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/22",
+      "created_at": "2026-10-29T08:30:00Z"
+    },
+    {
+      "number": 23,
+      "title": "Task description allows unbounded text length",
+      "body": "In tasks/service.py, there is no validation on description length. We should cap descriptions at 5,000 characters to prevent memory exhaustion.",
+      "author": "clara_o",
+      "labels": ["bug", "security"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/23",
+      "created_at": "2026-10-29T10:45:00Z"
+    },
+    {
+      "number": 24,
+      "title": "Add pagination support to GET /tasks API",
+      "body": "When the database has thousands of tasks, fetching all tasks at once degrades performance. Add limit and offset query parameters to list_tasks().",
+      "author": "marcus_w",
+      "labels": ["enhancement", "api"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/24",
+      "created_at": "2026-10-29T13:00:00Z"
+    },
+    {
+      "number": 25,
+      "title": "Automate test discovery in CLI",
+      "body": "Add a test command to cli.py that executes python -m unittest discover -s tests with exit code propagation.",
+      "author": "nora_j",
+      "labels": ["enhancement", "chore"],
+      "state": "open",
+      "html_url": "https://github.com/demo/taskboard/issues/25",
+      "created_at": "2026-10-29T15:30:00Z"
+    }
+  ]
+}

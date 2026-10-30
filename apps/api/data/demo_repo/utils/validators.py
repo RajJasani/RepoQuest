@@ -18,3 +18,4 @@ def validate_username(username: str) -> bool:
     if not username or not isinstance(username, str):
         return False
     return bool(USERNAME_REGEX.match(username.strip()))
+

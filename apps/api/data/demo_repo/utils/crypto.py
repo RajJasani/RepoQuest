@@ -18,3 +18,4 @@ def verify_password(password: str, hashed: str) -> bool:
     """Verifies that a password matches its hashed representation."""
     expected = hash_password(password)
     return hmac.compare_digest(expected, hashed)
+

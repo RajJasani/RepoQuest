@@ -19,3 +19,4 @@ def init_db():
         conn.execute(SCHEMA_USERS_SQL)
         conn.execute(SCHEMA_TASKS_SQL)
     conn.close()
+

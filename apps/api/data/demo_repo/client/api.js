@@ -40,3 +40,4 @@ async function updateTaskStatus(taskId, status) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = { fetchTasks, createTask, updateTaskStatus };
 }
+

@@ -1,0 +1,322 @@
+[
+  {
+    "id": 1,
+    "number": 101,
+    "title": "SQL Injection vulnerability in search filter",
+    "body": "Raw user input is concatenated directly into SQL queries in tasks/service.py, leading to remote code execution and data leak.",
+    "expected_type": "bug",
+    "expected_severity": "P0"
+  },
+  {
+    "id": 2,
+    "number": 102,
+    "title": "Application crash on server startup when DB file is missing",
+    "body": "Server throws uncaught FileNotFoundError and crashes immediately upon startup if taskboard.db does not exist.",
+    "expected_type": "bug",
+    "expected_severity": "P0"
+  },
+  {
+    "id": 3,
+    "number": 103,
+    "title": "Plaintext passwords saved in database",
+    "body": "Password hashing is bypassed when registering users through the API endpoint, saving plaintext passwords in SQLite.",
+    "expected_type": "bug",
+    "expected_severity": "P0"
+  },
+  {
+    "id": 4,
+    "number": 104,
+    "title": "Cannot create new tasks: 500 internal server error",
+    "body": "Submitting the task creation form always fails with 500 error due to missing assignee_id column in database schema.",
+    "expected_type": "bug",
+    "expected_severity": "P1"
+  },
+  {
+    "id": 5,
+    "number": 105,
+    "title": "User login session token expires immediately",
+    "body": "Session tokens expire within 1 second of generation, logging out all users on the next request.",
+    "expected_type": "bug",
+    "expected_severity": "P1"
+  },
+  {
+    "id": 6,
+    "number": 106,
+    "title": "Task status cannot be updated from in_progress to completed",
+    "body": "Calling PUT /tasks/1/status with completed returns 400 Bad Request because of a typo in the status validation list.",
+    "expected_type": "bug",
+    "expected_severity": "P1"
+  },
+  {
+    "id": 7,
+    "number": 107,
+    "title": "Password reset email is never sent",
+    "body": "Clicking forgot password results in a success message on the frontend but no email is ever dispatched.",
+    "expected_type": "bug",
+    "expected_severity": "P1"
+  },
+  {
+    "id": 8,
+    "number": 108,
+    "title": "Task card title overflows column boundary on mobile screens",
+    "body": "Long task titles do not wrap or truncate, causing the kanban column to stretch horizontally on viewport width < 600px.",
+    "expected_type": "bug",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 9,
+    "number": 109,
+    "title": "Date format inconsistency in task created_at timestamps",
+    "body": "Some task timestamps use ISO-8601 with UTC offset while others use local time strings without timezone indicators.",
+    "expected_type": "bug",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 10,
+    "number": 110,
+    "title": "Search query does not ignore case",
+    "body": "Searching for 'bug' does not return tasks titled 'Bug in parser'. Search filter should be case-insensitive.",
+    "expected_type": "bug",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 11,
+    "number": 111,
+    "title": "CLI list-tasks command prints unaligned columns",
+    "body": "When task titles are varying lengths, the terminal table output has misaligned borders.",
+    "expected_type": "bug",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 12,
+    "number": 112,
+    "title": "Minor CSS margin glitch in navbar icon",
+    "body": "The logout icon has 2px extra left margin compared to the user avatar icon in the top header.",
+    "expected_type": "bug",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 13,
+    "number": 113,
+    "title": "Typo in error response message for invalid email",
+    "body": "The validation error message says 'Invalide email adress' instead of 'Invalid email address'.",
+    "expected_type": "bug",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 14,
+    "number": 114,
+    "title": "Button hover state color slightly washed out in dark mode",
+    "body": "Hovering the 'Add Task' button in dark mode produces a background color that is hard to see.",
+    "expected_type": "bug",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 15,
+    "number": 115,
+    "title": "Console warning about deprecated fetch parameter",
+    "body": "Client console displays a minor deprecation notice regarding the credentials parameter in api.js.",
+    "expected_type": "bug",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 16,
+    "number": 116,
+    "title": "Support real-time WebSocket updates for task board",
+    "body": "Allow multiple users to view the board simultaneously with real-time updates when tasks move columns.",
+    "expected_type": "feature",
+    "expected_severity": "P1"
+  },
+  {
+    "id": 17,
+    "number": 117,
+    "title": "Add role-based access control (Admin, Member, Viewer)",
+    "body": "Introduce user roles to restrict who can delete tasks or manage organization users.",
+    "expected_type": "feature",
+    "expected_severity": "P1"
+  },
+  {
+    "id": 18,
+    "number": 118,
+    "title": "Add support for task tags and color-coded labels",
+    "body": "Users should be able to tag tasks with labels like 'frontend', 'backend', 'urgent' and filter by tag.",
+    "expected_type": "feature",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 19,
+    "number": 119,
+    "title": "Export task list to CSV and JSON formats",
+    "body": "Provide a download button on the dashboard and CLI command to export tasks to a CSV or JSON file.",
+    "expected_type": "feature",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 20,
+    "number": 120,
+    "title": "Add drag and drop support for moving cards between columns",
+    "body": "Allow users to drag task cards across backlog, in_progress, and completed columns in client/app.js.",
+    "expected_type": "feature",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 21,
+    "number": 121,
+    "title": "Implement task due dates and overdue reminders",
+    "body": "Add an optional due_date field to tasks and highlight overdue tasks in red.",
+    "expected_type": "feature",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 22,
+    "number": 122,
+    "title": "Add markdown preview for task descriptions",
+    "body": "Render markdown syntax (bold, lists, code blocks) in the task description viewer modal.",
+    "expected_type": "feature",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 23,
+    "number": 123,
+    "title": "Add keyboard shortcut to quickly open new task modal",
+    "body": "Pressing 'c' or 'n' when not in an input field should focus the new task creation input.",
+    "expected_type": "feature",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 24,
+    "number": 124,
+    "title": "Add confetti animation when moving task to completed",
+    "body": "Celebrate completing a task with a small, lightweight canvas confetti effect.",
+    "expected_type": "feature",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 25,
+    "number": 125,
+    "title": "Add custom avatar selection for users",
+    "body": "Allow users to pick an emoji or color avatar on their profile settings page.",
+    "expected_type": "feature",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 26,
+    "number": 126,
+    "title": "Document production deployment with Docker Compose",
+    "body": "Add a comprehensive section to README explaining how to containerize TaskBoard with Docker and Nginx.",
+    "expected_type": "docs",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 27,
+    "number": 127,
+    "title": "Document REST API endpoints and payload schemas",
+    "body": "Create an API.md document detailing all available endpoints, query parameters, and example JSON payloads.",
+    "expected_type": "docs",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 28,
+    "number": 128,
+    "title": "Fix broken link to architecture diagram in README",
+    "body": "The link in README.md pointing to docs/architecture.png returns 404. Update the path.",
+    "expected_type": "docs",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 29,
+    "number": 129,
+    "title": "Add code examples for TaskService in docstrings",
+    "body": "Add doctest or illustrative code snippets to TaskService methods in tasks/service.py.",
+    "expected_type": "docs",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 30,
+    "number": 130,
+    "title": "Update license year to 2026 in LICENSE file",
+    "body": "Bump the copyright notice year to 2026 in the LICENSE file.",
+    "expected_type": "docs",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 31,
+    "number": 131,
+    "title": "Upgrade SQLite driver dependency and pin versions",
+    "body": "Update requirements.txt to pin exact versions of development and testing packages.",
+    "expected_type": "chore",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 32,
+    "number": 132,
+    "title": "Refactor database connection pooling into singleton pattern",
+    "body": "Clean up get_db_connection in db/session.py to avoid repeatedly opening new connection objects.",
+    "expected_type": "chore",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 33,
+    "number": 133,
+    "title": "Add GitHub Actions CI workflow for test running",
+    "body": "Create .github/workflows/ci.yml to run unit tests automatically on every pull request.",
+    "expected_type": "chore",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 34,
+    "number": 134,
+    "title": "Clean up unused imports across api module",
+    "body": "Remove unused typing imports and redundant helper imports in api/routes_tasks.py.",
+    "expected_type": "chore",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 35,
+    "number": 135,
+    "title": "How to run TaskBoard on a custom port?",
+    "body": "I want to bind the server to port 9000 instead of 8000. Is there an environment variable for this?",
+    "expected_type": "question",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 36,
+    "number": 136,
+    "title": "Does TaskBoard support multiple boards or workspaces?",
+    "body": "Can a single user have separate boards for work and personal tasks in the current architecture?",
+    "expected_type": "question",
+    "expected_severity": "P2"
+  },
+  {
+    "id": 37,
+    "number": 137,
+    "title": "What is the recommended Python version for running tests?",
+    "body": "Will tests pass on Python 3.9 or is Python 3.11 strictly required by the codebase?",
+    "expected_type": "question",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 38,
+    "number": 138,
+    "title": "URGENT CLAIM YOUR BITCOIN REWARD NOW",
+    "body": "Exclusive bonus for repo contributors! Click http://totally-legit-crypto-reward.com now to withdraw 0.5 BTC!",
+    "expected_type": "spam",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 39,
+    "number": 139,
+    "title": "Cheap SEO and backlink service for your GitHub repo",
+    "body": "Boost your stars and traffic fast! Contact seo-boost-services@spam-mail.biz for premium pricing packages.",
+    "expected_type": "spam",
+    "expected_severity": "P3"
+  },
+  {
+    "id": 40,
+    "number": 140,
+    "title": "Telegram pump channel invitation",
+    "body": "Join our 100x crypto trading signals telegram group at t.me/spampump2026. Daily profits guaranteed!",
+    "expected_type": "spam",
+    "expected_severity": "P3"
+  }
+]

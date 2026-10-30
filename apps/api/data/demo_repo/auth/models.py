@@ -19,3 +19,4 @@ class User:
             "email": self.email,
             "created_at": self.created_at,
         }
+

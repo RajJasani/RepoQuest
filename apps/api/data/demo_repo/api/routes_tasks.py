@@ -39,3 +39,4 @@ class TaskHandler:
             return 200, {"task": updated.to_dict()}
         except ValueError as exc:
             return 400, {"error": str(exc)}
+

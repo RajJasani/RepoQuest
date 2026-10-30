@@ -333,6 +333,40 @@ async def approve_issue(
 
     posted_to_github_success = False
 
+    if repo.owner.lower() == "demo":
+        gh = github_client or GitHubClient()
+        simulated_res = {}
+        if final_labels:
+            simulated_res["labels"] = await gh.add_labels(repo.owner, repo.name, issue.number, final_labels)
+        if final_comment:
+            simulated_res["comment"] = await gh.post_issue_comment(repo.owner, repo.name, issue.number, final_comment)
+
+        issue.labels = final_labels
+        issue.triage_status = "applied"
+        undo_payload["simulated"] = True
+
+        await record_audit(
+            session=session,
+            feature="triage",
+            action="approve",
+            repo_id=repo.id,
+            ref_type="issue",
+            ref_id=str(issue.number),
+            outcome="ok",
+            undo_payload=undo_payload,
+        )
+        await session.commit()
+
+        return {
+            "status": "Applied (demo)",
+            "issue_id": str(issue.id),
+            "labels": final_labels,
+            "comment": final_comment,
+            "posted_to_github": True,
+            "simulated": True,
+            "request": simulated_res,
+        }
+
     if post_to_github:
         token: Optional[str] = None
         if settings_row and settings_row.github_token_enc:

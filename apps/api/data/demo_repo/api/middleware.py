@@ -23,3 +23,4 @@ class LoggingMiddleware(SimpleHTTPRequestHandler):
             self._send_json(200, {"status": "ok", "app": "TaskBoard"})
         else:
             super().do_GET()
+

@@ -179,11 +179,29 @@ class GitHubClient:
 
     async def get_labels(self, owner: str, repo: str) -> list[dict[str, Any]]:
         """Fetches allowed repository labels."""
+        if owner.lower() == "demo":
+            from pathlib import Path
+            import json
+            issues_file = Path(__file__).parent.parent.parent / "data" / "demo_issues.json"
+            if issues_file.exists():
+                with open(issues_file, encoding="utf-8") as f:
+                    data = json.load(f)
+                return [{"name": lbl} for lbl in data.get("labels", [])]
+
         res = await self._request("GET", f"/repos/{owner}/{repo}/labels", params={"per_page": 100})
         return res.json()
 
     async def get_open_issues(self, owner: str, repo: str) -> list[dict[str, Any]]:
         """Fetches open issues (strictly excluding pull requests)."""
+        if owner.lower() == "demo":
+            from pathlib import Path
+            import json
+            issues_file = Path(__file__).parent.parent.parent / "data" / "demo_issues.json"
+            if issues_file.exists():
+                with open(issues_file, encoding="utf-8") as f:
+                    data = json.load(f)
+                return data.get("issues", [])
+
         res = await self._request(
             "GET",
             f"/repos/{owner}/{repo}/issues",
@@ -195,6 +213,15 @@ class GitHubClient:
 
     async def get_open_pull_requests(self, owner: str, repo: str) -> list[dict[str, Any]]:
         """Fetches open pull requests."""
+        if owner.lower() == "demo":
+            from pathlib import Path
+            import json
+            prs_file = Path(__file__).parent.parent.parent / "data" / "demo_prs.json"
+            if prs_file.exists():
+                with open(prs_file, encoding="utf-8") as f:
+                    prs = json.load(f)
+                return prs
+
         res = await self._request(
             "GET",
             f"/repos/{owner}/{repo}/pulls",
@@ -213,6 +240,17 @@ class GitHubClient:
 
     async def get_pull_request_diff(self, owner: str, repo: str, pull_number: int) -> str:
         """Fetches raw diff text for a pull request."""
+        if owner.lower() == "demo":
+            from pathlib import Path
+            import json
+            prs_file = Path(__file__).parent.parent.parent / "data" / "demo_prs.json"
+            if prs_file.exists():
+                with open(prs_file, encoding="utf-8") as f:
+                    prs = json.load(f)
+                for p in prs:
+                    if p.get("number") == pull_number:
+                        return p.get("diff", "")
+
         res = await self._request(
             "GET",
             f"/repos/{owner}/{repo}/pulls/{pull_number}",
@@ -227,16 +265,46 @@ class GitHubClient:
 
     async def post_issue_comment(self, owner: str, repo: str, issue_number: int, body: str) -> dict[str, Any]:
         """Posts a comment on an issue or PR."""
+        if owner.lower() == "demo":
+            return {
+                "id": 100000 + issue_number,
+                "body": body,
+                "simulated": True,
+                "status": "Applied (demo)",
+                "request": {
+                    "method": "POST",
+                    "url": f"https://api.github.com/repos/{owner}/{repo}/issues/{issue_number}/comments",
+                    "json": {"body": body},
+                },
+            }
+
         res = await self._request("POST", f"/repos/{owner}/{repo}/issues/{issue_number}/comments", json={"body": body})
         return res.json()
 
     async def add_labels(self, owner: str, repo: str, issue_number: int, labels: list[str]) -> list[dict[str, Any]]:
         """Adds labels to an issue or PR."""
+        if owner.lower() == "demo":
+            return [
+                {
+                    "name": lbl,
+                    "simulated": True,
+                    "status": "Applied (demo)",
+                    "request": {
+                        "method": "POST",
+                        "url": f"https://api.github.com/repos/{owner}/{repo}/issues/{issue_number}/labels",
+                        "json": {"labels": labels},
+                    },
+                }
+                for lbl in labels
+            ]
+
         res = await self._request("POST", f"/repos/{owner}/{repo}/issues/{issue_number}/labels", json={"labels": labels})
         return res.json()
 
     async def remove_label(self, owner: str, repo: str, issue_number: int, label_name: str) -> None:
         """Removes a label from an issue or PR."""
+        if owner.lower() == "demo":
+            return
         await self._request("DELETE", f"/repos/{owner}/{repo}/issues/{issue_number}/labels/{label_name}")
 
     async def create_pull_request_review(
@@ -249,6 +317,25 @@ class GitHubClient:
         comments: Optional[list[dict[str, Any]]] = None,
     ) -> dict[str, Any]:
         """Creates a PR review with summary and inline file comments."""
+        if owner.lower() == "demo":
+            return {
+                "id": 200000 + pull_number,
+                "body": body,
+                "event": event,
+                "comments": comments or [],
+                "simulated": True,
+                "status": "Applied (demo)",
+                "request": {
+                    "method": "POST",
+                    "url": f"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}/reviews",
+                    "json": {
+                        "body": body,
+                        "event": event,
+                        "comments": comments or [],
+                    },
+                },
+            }
+
         payload: dict[str, Any] = {
             "body": body,
             "event": event,

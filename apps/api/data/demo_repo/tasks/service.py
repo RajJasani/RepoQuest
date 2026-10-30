@@ -92,3 +92,4 @@ class TaskService:
     def summarize(self, task: Task) -> str:
         """Returns formatted string representation using formatters."""
         return format_task_summary(task.to_dict())
+

@@ -14,3 +14,4 @@ def format_task_summary(task_data: Mapping[str, Any]) -> str:
 def slugify(text: str) -> str:
     """Converts a title or label into a url-friendly slug."""
     return "-".join(text.lower().strip().split())
+

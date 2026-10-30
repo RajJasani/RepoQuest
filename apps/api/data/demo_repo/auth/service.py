@@ -52,3 +52,4 @@ class AuthService:
             password_hash=row["password_hash"],
             created_at=row["created_at"],
         )
+

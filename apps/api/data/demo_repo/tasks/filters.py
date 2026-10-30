@@ -12,3 +12,4 @@ def filter_tasks_by_status(tasks: Iterable[Task], target_status: str) -> List[Ta
 def filter_unassigned_tasks(tasks: Iterable[Task]) -> List[Task]:
     """Returns all tasks without an assignee."""
     return [t for t in tasks if t.assignee_id is None]
+

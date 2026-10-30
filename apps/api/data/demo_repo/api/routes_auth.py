@@ -34,3 +34,4 @@ class AuthHandler:
         if not user:
             return 401, {"error": "Invalid credentials"}
         return 200, {"token": f"demo-session-{user.id}", "user": user.to_dict()}
+

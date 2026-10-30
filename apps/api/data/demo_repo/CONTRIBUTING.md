@@ -17,3 +17,4 @@ We welcome contributions! To keep the project maintainable, reliable, and welcom
 3. Write clean, modular code following the existing structure.
 4. Run tests locally: `python -m unittest discover -s tests`.
 5. Submit a pull request with a descriptive title and summary.
+

@@ -16,3 +16,4 @@ class BaseTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.conn.close()
+
