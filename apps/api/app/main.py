@@ -1,14 +1,24 @@
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
 from app.core.errors import register_error_handlers
 from app.core.logging import RequestIDMiddleware, setup_logging
-from app.routers import system
+from app.core.startup import run_startup
+from app.routers import settings, system
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    # Run startup initialization and checks
+    await run_startup()
+    yield
 
 
 def create_app() -> FastAPI:
-    settings = get_settings()
+    app_settings = get_settings()
     setup_logging()
 
     app = FastAPI(
@@ -16,13 +26,14 @@ def create_app() -> FastAPI:
         version="1.0.0",
         docs_url="/docs",
         openapi_url="/openapi.json",
+        lifespan=lifespan,
     )
 
     # Middleware order: Starlette executes middleware in reverse addition order,
     # so CORSMiddleware is added outer, RequestIDMiddleware inner.
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.cors_origins_list,
+        allow_origins=app_settings.cors_origins_list,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -35,6 +46,7 @@ def create_app() -> FastAPI:
     # Routers under /api/v1
     api_v1_router = APIRouter(prefix="/api/v1")
     api_v1_router.include_router(system.router)
+    api_v1_router.include_router(settings.router)
     app.include_router(api_v1_router)
 
     return app
