@@ -6,9 +6,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
+from app.core.errors import GitHubError, ValidationError
 from app.core.security import encrypt_token
 from app.models.core import Setting
 from app.schemas.settings import SettingsResponse, SettingsUpdateRequest
+from app.services.github import verify_github_token
 
 router = APIRouter(prefix="/settings", tags=["settings"])
 
@@ -83,6 +85,18 @@ async def update_github_token(
     payload: GitHubTokenRequest,
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
+    token = payload.token.strip()
+    if not token:
+        raise ValidationError("GitHub token cannot be empty")
+
+    # Verify the token against GitHub before saving
+    try:
+        await verify_github_token(token)
+    except GitHubError as exc:
+        raise GitHubError(f"GitHub token verification failed: {exc.message}") from exc
+    except Exception as exc:
+        raise GitHubError(f"Failed to verify token with GitHub: {exc}") from exc
+
     stmt = select(Setting).where(Setting.id == 1)
     result = await db.execute(stmt)
     setting = result.scalar_one_or_none()
@@ -90,7 +104,7 @@ async def update_github_token(
         setting = Setting(id=1)
         db.add(setting)
 
-    setting.github_token_enc = encrypt_token(payload.token.strip())
+    setting.github_token_enc = encrypt_token(token)
     setting.updated_at = datetime.now(timezone.utc)
     await db.commit()
     return {"status": "ok", "has_github_token": True}
@@ -108,3 +122,4 @@ async def delete_github_token(
         setting.updated_at = datetime.now(timezone.utc)
         await db.commit()
     return {"status": "ok", "has_github_token": False}
+

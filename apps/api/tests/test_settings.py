@@ -130,8 +130,15 @@ async def test_update_settings_validation_errors(settings_client):
 
 
 @pytest.mark.asyncio
+@respx.mock
 async def test_github_token_lifecycle(settings_client):
     client, setting = settings_client
+
+    # Mock valid token verification
+    respx.get("https://api.github.com/user").respond(
+        status_code=200,
+        json={"login": "testuser", "id": 12345},
+    )
 
     # 1. Put token
     raw_token = "ghp_superSecretToken1234567890abcdef"
@@ -156,6 +163,23 @@ async def test_github_token_lifecycle(settings_client):
     del_res = await client.delete("/api/v1/settings/github-token")
     assert del_res.status_code == 200
     assert del_res.json() == {"status": "ok", "has_github_token": False}
+    assert setting.github_token_enc is None
+
+
+@pytest.mark.asyncio
+@respx.mock
+async def test_github_token_verification_failure(settings_client):
+    client, setting = settings_client
+
+    # Mock 401 Bad credentials
+    respx.get("https://api.github.com/user").respond(
+        status_code=401,
+        json={"message": "Bad credentials"},
+    )
+
+    put_res = await client.put("/api/v1/settings/github-token", json={"token": "ghp_badToken"})
+    assert put_res.status_code == 502
+    assert put_res.json()["error"]["code"] == "github_error"
     assert setting.github_token_enc is None
 
 
