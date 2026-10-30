@@ -183,3 +183,60 @@ def test_cascade_delete_dependency_graph():
         assert fk.target_fullname == target
         assert fk.ondelete.upper() == "CASCADE"
 
+
+def test_remaining_tables_check_constraints():
+    tables = Base.metadata.tables
+
+    # issues: triage_status check
+    issues_checks = [c.sqltext.text for c in tables["issues"].constraints if hasattr(c, "sqltext")]
+    assert any("triage_status IN" in s for s in issues_checks)
+    assert any("untriaged" in s and "suggested" in s and "approved" in s for s in issues_checks)
+
+    # pr_reviews: status check
+    pr_checks = [c.sqltext.text for c in tables["pr_reviews"].constraints if hasattr(c, "sqltext")]
+    assert any("status IN ('running','done','failed','posted')" in s for s in pr_checks)
+
+    # spam_assessments: spam_score check
+    spam_checks = [c.sqltext.text for c in tables["spam_assessments"].constraints if hasattr(c, "sqltext")]
+    assert any("spam_score BETWEEN 0 AND 100" in s for s in spam_checks)
+
+    # chat_sessions: mode check
+    session_checks = [c.sqltext.text for c in tables["chat_sessions"].constraints if hasattr(c, "sqltext")]
+    assert any("mode IN ('newcomer','expert')" in s for s in session_checks)
+
+    # chat_messages: role check
+    msg_checks = [c.sqltext.text for c in tables["chat_messages"].constraints if hasattr(c, "sqltext")]
+    assert any("role IN ('user','assistant')" in s for s in msg_checks)
+
+    # benchmark_runs: status check
+    bench_checks = [c.sqltext.text for c in tables["benchmark_runs"].constraints if hasattr(c, "sqltext")]
+    assert any("status IN ('running','done','failed','cancelled')" in s for s in bench_checks)
+
+    # health_snapshots: load_index check
+    health_checks = [c.sqltext.text for c in tables["health_snapshots"].constraints if hasattr(c, "sqltext")]
+    assert any("load_index BETWEEN 0 AND 100" in s for s in health_checks)
+
+
+def test_issues_embedding_index():
+    table = Base.metadata.tables["issues"]
+    idx = next((i for i in table.indexes if i.name == "issues_embedding_idx"), None)
+    assert idx is not None, "issues_embedding_idx index missing on issues table"
+    assert idx.dialect_options["postgresql"]["using"] == "hnsw"
+    assert idx.dialect_options["postgresql"]["ops"] == {"embedding": "vector_cosine_ops"}
+
+
+def test_alembic_0002_migration_metadata():
+    import importlib.util
+    from pathlib import Path
+
+    path = Path(__file__).parent.parent / "alembic" / "versions" / "0002_remaining_tables.py"
+    assert path.exists(), f"Migration file not found at {path}"
+    spec = importlib.util.spec_from_file_location("migration_0002", path)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert mod.revision == "0002"
+    assert mod.down_revision == "0001"
+    assert callable(mod.upgrade)
+    assert callable(mod.downgrade)
+
