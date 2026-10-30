@@ -26,3 +26,4 @@ async def load_demo_repo(
     provider = await get_provider(db)
     result = await load_demo_data(session=db, provider=provider)
     return result
+

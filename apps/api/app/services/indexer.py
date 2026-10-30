@@ -4,6 +4,7 @@ import asyncio
 from datetime import datetime, timezone
 import logging
 from pathlib import Path
+import time
 from typing import Any, Optional
 import uuid
 
@@ -18,6 +19,7 @@ from app.models.features import Issue, PullRequest
 from app.providers.base import LLMProvider
 from app.providers.factory import get_provider
 from app.services.archive import extract_tarball_safely
+from app.services.audit import record_audit
 from app.services.chunker import chunk_file, compute_content_hash
 from app.services.explorer import ExplorerService
 from app.services.github import GitHubClient
@@ -248,9 +250,25 @@ class IndexerService:
 
                 # Batch embed new chunks
                 if texts_to_embed:
+                    t0 = time.perf_counter()
                     new_embeddings = await llm_provider.embed(texts_to_embed)
+                    t1 = time.perf_counter()
                     for chunk_obj, emb in zip(chunks_to_embed, new_embeddings):
                         chunk_obj.embedding = emb
+                    await record_audit(
+                        session=session,
+                        feature="embeddings",
+                        action="embed_chunks",
+                        repo_id=repo.id,
+                        ref_type="repository",
+                        ref_id=str(repo.id),
+                        model=getattr(llm_provider, "embed_model", "nomic-embed-text"),
+                        prompt_version="v1",
+                        tokens_in=sum(len(t) for t in texts_to_embed) // 4,
+                        tokens_out=0,
+                        latency_ms=max(int((t1 - t0) * 1000), 1),
+                        outcome="ok",
+                    )
 
                 session.add_all(all_chunk_objs)
 
@@ -289,9 +307,25 @@ class IndexerService:
                     issue_texts_to_embed.append(combo_text)
 
                 if issue_texts_to_embed:
+                    t0 = time.perf_counter()
                     issue_embeddings = await llm_provider.embed(issue_texts_to_embed)
+                    t1 = time.perf_counter()
                     for i_obj, emb in zip(issue_objs, issue_embeddings):
                         i_obj.embedding = emb
+                    await record_audit(
+                        session=session,
+                        feature="embeddings",
+                        action="embed_issues",
+                        repo_id=repo.id,
+                        ref_type="repository",
+                        ref_id=str(repo.id),
+                        model=getattr(llm_provider, "embed_model", "nomic-embed-text"),
+                        prompt_version="v1",
+                        tokens_in=sum(len(t) for t in issue_texts_to_embed) // 4,
+                        tokens_out=0,
+                        latency_ms=max(int((t1 - t0) * 1000), 1),
+                        outcome="ok",
+                    )
 
                 session.add_all(issue_objs)
 

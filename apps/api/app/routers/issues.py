@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 import logging
+import time
 from typing import Any, Optional
 import uuid
 
@@ -24,6 +25,7 @@ from app.schemas.issues import (
     IssueSyncResponse,
     IssueTriageEnqueueResponse,
 )
+from app.services.audit import record_audit
 from app.services.github import GitHubClient
 from app.services.triage import approve_issue, reject_issue
 
@@ -133,9 +135,25 @@ async def sync_repo_issues(
 
     # Batch embed issues
     if texts_to_embed:
+        t0 = time.perf_counter()
         embeddings = await provider.embed(texts_to_embed)
+        t1 = time.perf_counter()
         for (issue_obj, _), emb in zip(issues_to_update, embeddings):
             issue_obj.embedding = emb
+        await record_audit(
+            session=db,
+            feature="embeddings",
+            action="embed_issues_sync",
+            repo_id=repo.id,
+            ref_type="repository",
+            ref_id=str(repo.id),
+            model=getattr(provider, "embed_model", "nomic-embed-text"),
+            prompt_version="v1",
+            tokens_in=sum(len(t) for t in texts_to_embed) // 4,
+            tokens_out=0,
+            latency_ms=max(int((t1 - t0) * 1000), 1),
+            outcome="ok",
+        )
 
     await db.commit()
 

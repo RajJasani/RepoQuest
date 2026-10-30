@@ -4,6 +4,7 @@ import asyncio
 from datetime import datetime, timezone
 import json
 import logging
+import time
 from typing import Any
 import uuid
 
@@ -24,6 +25,7 @@ from app.schemas.chat import (
     ChatSessionDetailResponse,
     ChatSessionResponse,
 )
+from app.services.audit import record_audit
 from app.services.rag import (
     build_rag_prompt,
     process_citations,
@@ -200,6 +202,7 @@ async def send_chat_message(
     async def event_generator():
         accumulated_chunks: list[str] = []
         assistant_msg_id = uuid.uuid4()
+        t_start = time.perf_counter()
 
         if rag_ctx.is_low_confidence:
             fallback = rag_ctx.fallback_answer or "I could not find this in the repo."
@@ -226,6 +229,21 @@ async def send_chat_message(
                 citations=[],
             )
             db.add(asst_msg)
+            latency_ms = max(int((time.perf_counter() - t_start) * 1000), 1)
+            await record_audit(
+                session=db,
+                feature="chat",
+                action="ask_repo",
+                repo_id=session_obj.repo_id,
+                ref_type="chat_session",
+                ref_id=str(session_uuid),
+                model=getattr(provider, "chat_model", "gemma3:4b"),
+                prompt_version="v1",
+                tokens_in=len(payload.content) // 4,
+                tokens_out=len(full_text) // 4,
+                latency_ms=latency_ms,
+                outcome="ok",
+            )
             await db.commit()
 
             yield {
@@ -286,6 +304,24 @@ async def send_chat_message(
             citations=valid_citations,
         )
         db.add(asst_msg)
+        latency_ms = max(int((time.perf_counter() - t_start) * 1000), 1)
+        await record_audit(
+            session=db,
+            feature="chat",
+            action="ask_repo",
+            repo_id=session_obj.repo_id,
+            ref_type="chat_session",
+            ref_id=str(session_uuid),
+            model=getattr(provider, "chat_model", "gemma3:4b"),
+            prompt_version="v1",
+            tokens_in=sum(
+                len(m.get("content", "") if isinstance(m, dict) else getattr(m, "content", ""))
+                for m in messages
+            ) // 4,
+            tokens_out=len(cleaned_text) // 4,
+            latency_ms=latency_ms,
+            outcome="ok",
+        )
         await db.commit()
 
         yield {

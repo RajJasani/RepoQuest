@@ -260,3 +260,4 @@
     "diff": "diff --git a/tasks/models.py b/tasks/models.py\n--- a/tasks/models.py\n+++ b/tasks/models.py\n@@ -1,2 +1,2 @@\n-\"\"\"Task data models.\"\"\"\n+\"\"\"Task data models.\"\"\" \n"
   }
 ]
+

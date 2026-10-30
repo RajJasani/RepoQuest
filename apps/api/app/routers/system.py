@@ -1,6 +1,6 @@
 import asyncio
 from typing import Any
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -61,6 +61,36 @@ async def get_health(db: AsyncSession = Depends(get_db)) -> dict[str, Any]:
         result["embedding_dimension_warning"] = emb_warning
 
     return result
+
+
+@router.get("/models/recommend")
+async def recommend_model(
+    ram_gb: float = Query(..., ge=1, description="Host system RAM in gigabytes"),
+) -> dict[str, Any]:
+    """Recommends an optimal model size and name based on available system RAM."""
+    if ram_gb < 8:
+        model = "qwen2.5:1.5b"
+        size = "1B-2B"
+        reason = "Systems with under 8 GB RAM run best with lightweight 1B to 2B parameter models."
+    elif ram_gb < 16:
+        model = "gemma3:4b"
+        size = "3B-4B"
+        reason = "8 GB to 16 GB RAM is well suited for 3B to 4B models (e.g. gemma3:4b, llama3.2:3b)."
+    elif ram_gb < 32:
+        model = "qwen2.5:7b"
+        size = "7B-9B"
+        reason = "16 GB to 32 GB RAM has ample memory for 7B to 9B models with fast inference."
+    else:
+        model = "qwen2.5:14b"
+        size = "14B-32B"
+        reason = "32 GB+ RAM can comfortably run 14B to 32B models for peak reasoning quality."
+
+    return {
+        "ram_gb": ram_gb,
+        "recommended_model": model,
+        "recommended_size": size,
+        "reason": reason,
+    }
 
 
 @router.get("/models")

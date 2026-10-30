@@ -239,3 +239,4 @@ async def test_demo_load_endpoint():
             assert data["issues_count"] == 25
             assert data["prs_count"] == 20
             assert data["duration_seconds"] < 20.0
+

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 import logging
+import time
 from typing import Any, Optional
 import uuid
 
@@ -134,7 +135,23 @@ async def sync_repo_prs(
 
         # Embed title and body as per task requirement
         try:
+            t0 = time.perf_counter()
             await provider.embed([f"{title}\n\n{body}"])
+            t1 = time.perf_counter()
+            await record_audit(
+                session=db,
+                feature="embeddings",
+                action="embed_pr_sync",
+                repo_id=repo.id,
+                ref_type="pull_request",
+                ref_id=str(number),
+                model=getattr(provider, "embed_model", "nomic-embed-text"),
+                prompt_version="v1",
+                tokens_in=len(f"{title}\n\n{body}") // 4,
+                tokens_out=0,
+                latency_ms=max(int((t1 - t0) * 1000), 1),
+                outcome="ok",
+            )
         except Exception as exc:
             logger.warning("Failed to embed PR #%s: %s", number, exc)
 
