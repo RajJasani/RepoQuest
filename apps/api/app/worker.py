@@ -10,8 +10,11 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.core.db import get_sessionmaker
-from app.models.core import Job
+from app.models.core import Job, Repository, Setting
+from app.models.features import Issue
+from app.providers.factory import get_provider
 from app.services.indexer import IndexerService
+from app.services.triage import triage_issue
 
 logger = logging.getLogger("app.worker")
 
@@ -81,6 +84,29 @@ async def process_next_job(sessionmaker: async_sessionmaker[AsyncSession]) -> bo
             token_enc = job_payload.get("token_enc")
             indexer = IndexerService(sessionmaker=sessionmaker)
             await indexer.index_repository(repo_id=str(repo_id), token_enc=token_enc)
+        elif job_kind == "triage_issue":
+            issue_id_str = job_payload.get("issue_id")
+            async with sessionmaker() as session:
+                stmt_iss = select(Issue).where(Issue.id == uuid.UUID(issue_id_str))
+                res_iss = await session.execute(stmt_iss)
+                issue_obj = res_iss.scalar_one_or_none()
+                if issue_obj:
+                    stmt_repo = select(Repository).where(Repository.id == issue_obj.repo_id)
+                    res_repo = await session.execute(stmt_repo)
+                    repo_obj = res_repo.scalar_one_or_none()
+
+                    stmt_set = select(Setting).where(Setting.id == 1)
+                    res_set = await session.execute(stmt_set)
+                    set_obj = res_set.scalar_one_or_none()
+
+                    provider = await get_provider(session)
+                    await triage_issue(
+                        session=session,
+                        issue=issue_obj,
+                        repo=repo_obj,
+                        provider=provider,
+                        settings_row=set_obj,
+                    )
         else:
             logger.warning("Unrecognized job kind '%s' for job %s", job_kind, job_id)
             job_error = f"Unrecognized job kind: {job_kind}"

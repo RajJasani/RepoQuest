@@ -80,6 +80,7 @@ def test_repositories_columns_and_constraints():
         "status",
         "progress",
         "error",
+        "labels",
         "last_indexed_at",
         "created_at",
     }

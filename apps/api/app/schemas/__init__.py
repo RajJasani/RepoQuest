@@ -14,6 +14,15 @@ from app.schemas.explorer import (
     ModuleNeighbors,
     NeighborNode,
 )
+from app.schemas.issues import (
+    IssueAnalysisResponse,
+    IssueApproveRequest,
+    IssueApproveResponse,
+    IssueDetailResponse,
+    IssueListResponse,
+    IssueSyncResponse,
+    IssueTriageEnqueueResponse,
+)
 from app.schemas.llm import (
     Duplicate,
     FileComment,
@@ -53,7 +62,14 @@ __all__ = [
     "FileComment",
     "FileContentResponse",
     "FileReview",
+    "IssueAnalysisResponse",
+    "IssueApproveRequest",
+    "IssueApproveResponse",
     "IssueBrief",
+    "IssueDetailResponse",
+    "IssueListResponse",
+    "IssueSyncResponse",
+    "IssueTriageEnqueueResponse",
     "ModuleDetailResponse",
     "ModuleNeighbors",
     "NeighborNode",

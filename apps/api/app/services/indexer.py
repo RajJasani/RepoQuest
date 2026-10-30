@@ -157,7 +157,13 @@ class IndexerService:
                 tarball_bytes = await gh.download_tarball(repo.owner, repo.name, ref=repo.default_branch)
                 extract_tarball_safely(tarball_bytes, dest_dir)
 
-                # Fetch open issues and open PRs
+                # Fetch labels, open issues and open PRs
+                try:
+                    labels_data = await gh.get_labels(repo.owner, repo.name)
+                    repo.labels = [lbl["name"] for lbl in labels_data if isinstance(lbl, dict) and "name" in lbl]
+                except Exception as exc:
+                    logger.debug("Failed to fetch repository labels: %s", exc)
+
                 issues_data = await gh.get_open_issues(repo.owner, repo.name)
                 prs_data = await gh.get_open_pull_requests(repo.owner, repo.name)
 

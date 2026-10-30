@@ -125,6 +125,11 @@ class Repository(Base):
         server_default=text("'[]'::jsonb"),
         nullable=True,
     )
+    labels: Mapped[Optional[Any]] = mapped_column(
+        JSONB,
+        server_default=text("'[]'::jsonb"),
+        nullable=True,
+    )
     contributing_md: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     readme_excerpt: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     run_instructions: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
