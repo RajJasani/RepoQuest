@@ -1,0 +1,11 @@
+{
+  "name": "taskboard-client",
+  "version": "1.0.0",
+  "description": "Client frontend for TaskBoard",
+  "main": "client/app.js",
+  "scripts": {
+    "test": "node --check client/app.js client/api.js client/components.js"
+  },
+  "author": "TaskBoard Contributors",
+  "license": "MIT"
+}
