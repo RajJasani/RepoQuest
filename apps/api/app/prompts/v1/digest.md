@@ -1,0 +1,1 @@
+Given the metrics JSON and lists of notable issues and PRs, write a weekly Markdown digest with sections: Highlights, Needs attention, Newcomer wins, Suggested focus for next week. Do not invent numbers; use only provided metrics.

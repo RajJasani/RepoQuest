@@ -1,0 +1,1 @@
+Given the PR title and description, one file’s diff with line numbers, and related code context, list concrete issues: bugs, missing tests, risky changes, unclear naming, violations of the CONTRIBUTING rules. Reference only line numbers that appear in the diff. Prefer fewer, higher-quality comments. Be kind and constructive.

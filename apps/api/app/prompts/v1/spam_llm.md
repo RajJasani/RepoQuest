@@ -1,0 +1,1 @@
+Given the PR title, description and diff summary, decide whether the change is meaningful, whether it matches its description and whether the text looks generic. Write a polite, non-accusatory comment the maintainer can post.

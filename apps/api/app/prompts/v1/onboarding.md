@@ -1,0 +1,1 @@
+Given the repo summary, module list, entry points and README, design 6 to 10 steps that take a beginner from “what is this project” to “I can make a small change”. Each step must cite real files and line ranges from the provided list only, contain a short explanation, two quiz questions with 3 or 4 options, and a small hands-on task.
