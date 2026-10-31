@@ -123,3 +123,4 @@ if (failedCount > 0) {
   console.log('All token contrast checks PASSED successfully.');
   process.exit(0);
 }
+

@@ -5,11 +5,18 @@ import { useCalmMode } from '@/lib/calm';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { fadeUp, spring } from '@/lib/motion';
+import { Logo, CompassIcon } from '@/components/brand/Logo';
+import { SignatureStrip } from '@/components/brand/SignatureStrip';
+import { Pip, PipState } from '@/components/brand/Pip';
+import { PixelIcon, PixelIconName } from '@/components/brand/PixelIcon';
+import { ContourBackground } from '@/components/brand/ContourBackground';
 
 export default function DesignPage() {
   const { theme, setTheme } = useTheme();
   const { calm, setCalm } = useCalmMode();
   const [mounted, setMounted] = useState(false);
+  const [interactivePipState, setInteractivePipState] = useState<PipState>('idle');
+  const [pixelIconMono, setPixelIconMono] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -42,16 +49,41 @@ export default function DesignPage() {
     { name: 'text-muted', token: 'var(--text-muted)', label: 'Secondary Text' },
   ];
 
+  const pipStates: { state: PipState; label: string; desc: string }[] = [
+    { state: 'idle', label: 'Idle', desc: 'Slow 3s breathing float' },
+    { state: 'thinking', label: 'Thinking', desc: 'Head tilt & pupil scan' },
+    { state: 'exploring', label: 'Exploring', desc: 'Lantern glow & walking legs' },
+    { state: 'success', label: 'Success', desc: 'Victory jump & amber sparks' },
+    { state: 'error', label: 'Error', desc: 'Cross eyes & side-to-side shake' },
+    { state: 'sleeping', label: 'Sleeping', desc: 'Closed eyes & drifting Zs' },
+  ];
+
+  const pixelIconsList: PixelIconName[] = [
+    'compass',
+    'flag',
+    'shield',
+    'cracked-shield',
+    'scroll',
+    'lantern',
+    'key',
+    'spark',
+    'crown',
+    'lock',
+  ];
+
   return (
-    <div className="min-h-screen bg-bg text-text p-6 md:p-12 max-w-6xl mx-auto space-y-12">
+    <div className="min-h-screen bg-bg text-text p-6 md:p-12 max-w-6xl mx-auto space-y-16 relative">
       {/* Header with Theme & Calm Mode Controls */}
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-border">
         <div>
+          <div className="flex items-center gap-3 mb-2">
+            <Logo variant="full" size="sm" />
+          </div>
           <h1 className="font-display font-bold text-3xl md:text-4xl text-text">
             RepoQuest Design System
           </h1>
           <p className="text-text-muted mt-1">
-            Pixel Cartography tokens, typography, motion, and themes.
+            Pixel Cartography tokens, brand assets, Pip mascot, pixel icons, and themes.
           </p>
         </div>
 
@@ -88,46 +120,273 @@ export default function DesignPage() {
                 calm ? 'bg-mint text-bg' : 'text-text hover:bg-surface-3'
               }`}
             >
-              {calm ? 'Calm: ON' : 'Calm: OFF'}
+              {calm ? 'Calm: ON (Paused)' : 'Calm: OFF (Active)'}
             </button>
           </div>
         </div>
       </header>
 
-      {/* Color Tokens: Surfaces */}
-      <section className="space-y-4">
-        <h2 className="font-display font-bold text-xl text-text">1. Surfaces</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {surfaceTokens.map((t) => (
+      {/* Brand Assets Showcase: Logo */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="font-display font-bold text-2xl text-text">1. Brand Logo</h2>
+          <span className="text-xs font-mono text-text-muted">§2 & §16 (8x8 Compass Rose + Signature Dot)</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 rounded-md bg-surface-1 border border-border shadow-card space-y-4">
+            <span className="font-mono text-xs text-text-muted uppercase">Full Logo (Bricolage 800 + Dot Strip)</span>
+            <div className="py-2">
+              <Logo variant="full" size="lg" showTagline />
+            </div>
+            <div className="flex items-center gap-4 pt-2">
+              <Logo variant="full" size="md" />
+              <Logo variant="full" size="sm" />
+            </div>
+          </div>
+
+          <div className="p-6 rounded-md bg-surface-1 border border-border shadow-card space-y-4">
+            <span className="font-mono text-xs text-text-muted uppercase">Variants: Wordmark, Icon & Mono</span>
+            <div className="flex flex-wrap items-center gap-6 py-2">
+              <div>
+                <span className="text-xs font-mono text-text-muted block mb-1">Wordmark</span>
+                <Logo variant="wordmark" size="md" />
+              </div>
+              <div>
+                <span className="text-xs font-mono text-text-muted block mb-1">Compass Icon</span>
+                <CompassIcon size={36} />
+              </div>
+              <div>
+                <span className="text-xs font-mono text-text-muted block mb-1">Mono Icon</span>
+                <CompassIcon size={36} mono className="text-text" />
+              </div>
+              <div>
+                <span className="text-xs font-mono text-text-muted block mb-1">Mono Full</span>
+                <Logo variant="full" size="sm" mono />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Signature Strip */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="font-display font-bold text-2xl text-text">2. Signature Strip</h2>
+          <span className="text-xs font-mono text-text-muted">4 square pixels: Sky, Amber, Rose, Flame</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="p-6 rounded-md bg-surface-1 border border-border shadow-card space-y-4">
+            <span className="font-mono text-xs text-text-muted uppercase">Divider Variant</span>
+            <div className="py-4">
+              <SignatureStrip variant="divider" size={8} />
+            </div>
+            <p className="text-xs text-text-muted">Centered 4-pixel divider for card footers and section ends.</p>
+          </div>
+
+          <div className="p-6 rounded-md bg-surface-1 border border-border shadow-card space-y-4">
+            <span className="font-mono text-xs text-text-muted uppercase">Loader Variant</span>
+            <div className="py-4 flex justify-center">
+              <SignatureStrip variant="loader" size={10} />
+            </div>
+            <p className="text-xs text-text-muted">Sequentially pulsing loop for inline background tasks.</p>
+          </div>
+
+          <div className="p-6 rounded-md bg-surface-1 border border-border shadow-card space-y-4">
+            <span className="font-mono text-xs text-text-muted uppercase">Cap Variant</span>
+            <div className="py-4">
+              <div className="h-1.5 w-full bg-surface-3 rounded-full overflow-hidden relative">
+                <div className="h-full bg-brand w-2/3" />
+                <div className="absolute top-0 right-1/3">
+                  <SignatureStrip variant="cap" size={6} />
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-text-muted">4-color cap on top edge of progress bars and cards.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Pip Mascot Gallery (All 6 States) */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="font-display font-bold text-2xl text-text">3. Pip Mascot (All 6 States)</h2>
+            <p className="text-xs text-text-muted mt-1">
+              Exact 14x12 pixel grid with animated antenna, scanning eyes, legs, sparks, lantern, and Zs.
+            </p>
+          </div>
+          <span className="text-xs font-mono px-2 py-1 rounded bg-surface-2 border border-border">
+            {calm ? 'Calm Mode Active (Static Poses)' : 'Animated Mode'}
+          </span>
+        </div>
+
+        {/* All 6 states side by side */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {pipStates.map(({ state, label, desc }) => (
             <div
-              key={t.name}
-              className="p-4 rounded-md border border-border shadow-card flex flex-col justify-between h-28"
-              style={{ backgroundColor: t.token }}
+              key={state}
+              className={`p-4 rounded-md bg-surface-1 border transition-all text-center flex flex-col items-center justify-between gap-3 ${
+                interactivePipState === state
+                  ? 'border-brand shadow-card'
+                  : 'border-border'
+              }`}
+              onClick={() => setInteractivePipState(state)}
             >
-              <span className="font-mono text-xs font-bold text-text">--{t.name}</span>
-              <span className="text-xs text-text-muted">{t.label}</span>
+              <div className="h-28 flex items-center justify-center">
+                <Pip state={state} size={84} />
+              </div>
+              <div className="w-full pt-2 border-t border-border">
+                <h4 className="font-display font-bold text-sm text-text capitalize">{label}</h4>
+                <p className="text-[11px] text-text-muted mt-0.5 line-clamp-1">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Interactive Pip Playground */}
+        <div className="p-6 rounded-md bg-surface-1 border border-border shadow-card flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-6">
+            <div className="w-32 h-32 flex items-center justify-center bg-surface-2 rounded-lg border border-border">
+              <Pip state={interactivePipState} size={112} />
+            </div>
+            <div>
+              <span className="text-xs font-mono text-amber uppercase tracking-wider font-semibold">
+                Pip Playground
+              </span>
+              <h3 className="font-display font-bold text-xl text-text capitalize">
+                State: {interactivePipState}
+              </h3>
+              <p className="text-xs text-text-muted mt-1">
+                {pipStates.find((s) => s.state === interactivePipState)?.desc}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {pipStates.map(({ state, label }) => (
+              <button
+                key={state}
+                onClick={() => setInteractivePipState(state)}
+                className={`px-3 py-1.5 text-xs rounded font-medium border transition-colors ${
+                  interactivePipState === state
+                    ? 'bg-brand text-bg border-brand'
+                    : 'bg-surface-2 text-text border-border hover:bg-surface-3'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pixel Icons (16x16) */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="font-display font-bold text-2xl text-text">4. Pixel Icons (16x16 Grid)</h2>
+            <p className="text-xs text-text-muted mt-1">
+              Custom pixel-art SVG sprite with crispEdges: compass, flag, shield, cracked-shield, scroll, lantern, key, spark, crown, lock.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setPixelIconMono(!pixelIconMono)}
+              className={`px-3 py-1 text-xs rounded font-medium border transition-colors ${
+                pixelIconMono
+                  ? 'bg-brand text-bg border-brand'
+                  : 'bg-surface-1 text-text border-border hover:bg-surface-2'
+              }`}
+            >
+              {pixelIconMono ? 'Mono: ON' : 'Mono: OFF (Colors)'}
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+          {pixelIconsList.map((iconName) => (
+            <div
+              key={iconName}
+              className="p-4 rounded-md bg-surface-1 border border-border shadow-card flex flex-col items-center justify-center gap-3 text-center"
+            >
+              <div className="w-16 h-16 rounded-md bg-surface-2 border border-border flex items-center justify-center">
+                <PixelIcon name={iconName} size={32} mono={pixelIconMono} />
+              </div>
+              <div>
+                <span className="font-mono text-xs text-text capitalize block">
+                  {iconName.replace('-', ' ')}
+                </span>
+                <span className="text-[10px] font-mono text-text-muted">16x16 SVG</span>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Color Tokens: Brand & Status */}
+      {/* Contour Background Preview */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="font-display font-bold text-2xl text-text">5. Contour Background</h2>
+            <p className="text-xs text-text-muted mt-1">
+              Hand-tuned wavy closed elevation paths with 40s linear drift animation. Pauses off-screen & in Calm mode.
+            </p>
+          </div>
+          <span className="text-xs font-mono px-2 py-1 rounded bg-surface-2 border border-border">
+            {calm ? 'Contour Static (Calm Mode)' : 'Contour Drifting'}
+          </span>
+        </div>
+
+        <div className="relative h-64 w-full rounded-lg border border-border overflow-hidden bg-surface-1 shadow-card flex items-center justify-center">
+          <ContourBackground opacity={0.12} />
+          <div className="relative z-10 text-center max-w-md px-6">
+            <span className="font-pixel text-xs text-amber uppercase tracking-wider block mb-2">
+              HERO MAP BACKGROUND
+            </span>
+            <h3 className="font-display font-bold text-2xl text-text">
+              Topographic Terrain Canvas
+            </h3>
+            <p className="text-xs text-text-muted mt-2">
+              24 organic elevation contours move gently beneath the hero quest map without distracting from primary tasks.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Color Tokens: Surfaces */}
       <section className="space-y-4">
-        <h2 className="font-display font-bold text-xl text-text">2. Brand & Status Accents</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {brandTokens.map((t) => (
+        <h2 className="font-display font-bold text-xl text-text">6. Surfaces</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {surfaceTokens.map((item) => (
             <div
-              key={t.name}
-              className="p-4 rounded-md bg-surface-1 border border-border shadow-card flex items-center gap-3"
+              key={item.name}
+              className="p-4 rounded-md border border-border space-y-2 shadow-card"
+              style={{ backgroundColor: item.token }}
+            >
+              <div className="font-mono text-xs font-bold text-text">{item.name}</div>
+              <div className="text-xs text-text-muted">{item.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Color Tokens: Brand & Semantics */}
+      <section className="space-y-4">
+        <h2 className="font-display font-bold text-xl text-text">7. Brand & Semantic Tokens</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+          {brandTokens.map((item) => (
+            <div
+              key={item.name}
+              className="p-4 rounded-md border border-border space-y-2 bg-surface-1 shadow-card"
             >
               <div
-                className="w-10 h-10 rounded border border-border flex-shrink-0"
-                style={{ backgroundColor: t.token }}
+                className="w-full h-12 rounded border border-border"
+                style={{ backgroundColor: item.token }}
               />
-              <div className="flex flex-col min-w-0">
-                <span className="font-mono text-xs font-bold text-text truncate">--{t.name}</span>
-                <span className="text-xs text-text-muted truncate">{t.label}</span>
-              </div>
+              <div className="font-mono text-xs font-bold text-text">{item.name}</div>
+              <div className="text-[11px] text-text-muted leading-tight">{item.label}</div>
             </div>
           ))}
         </div>
@@ -135,68 +394,31 @@ export default function DesignPage() {
 
       {/* Color Tokens: Neutrals */}
       <section className="space-y-4">
-        <h2 className="font-display font-bold text-xl text-text">3. Text & Borders</h2>
+        <h2 className="font-display font-bold text-xl text-text">8. Neutrals & Borders</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {neutralTokens.map((t) => (
+          {neutralTokens.map((item) => (
             <div
-              key={t.name}
-              className="p-4 rounded-md bg-surface-1 border border-border shadow-card flex items-center gap-3"
+              key={item.name}
+              className="p-4 rounded-md border border-border space-y-2 bg-surface-1 shadow-card"
             >
               <div
-                className="w-10 h-10 rounded border border-border flex-shrink-0"
-                style={{ backgroundColor: t.token }}
+                className="w-full h-12 rounded border border-border"
+                style={{ backgroundColor: item.token }}
               />
-              <div className="flex flex-col min-w-0">
-                <span className="font-mono text-xs font-bold text-text">--{t.name}</span>
-                <span className="text-xs text-text-muted">{t.label}</span>
-              </div>
+              <div className="font-mono text-xs font-bold text-text">{item.name}</div>
+              <div className="text-xs text-text-muted">{item.label}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Gradients & Special Shapes */}
+      {/* Typography Hierarchy */}
       <section className="space-y-4">
-        <h2 className="font-display font-bold text-xl text-text">4. Effects & Quest Card</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="p-6 rounded-md bg-aurora text-bg flex flex-col justify-end h-36">
-            <span className="font-display font-extrabold text-2xl">Aurora Gradient</span>
-            <span className="text-xs opacity-90 font-mono">--aurora</span>
-          </div>
-
-          <div className="p-0.5 bg-border quest-card">
-            <div className="p-6 bg-surface-1 quest-card h-full flex flex-col justify-between">
-              <div>
-                <span className="font-pixel text-xs text-amber uppercase tracking-wider">
-                  QUEST CARD PREVIEW
-                </span>
-                <h3 className="font-display font-bold text-lg text-text mt-1">
-                  10px Notched Corners
-                </h3>
-                <p className="text-xs text-text-muted mt-1">
-                  Diagonal-cut corners with clip-path on top-left and bottom-right.
-                </p>
-              </div>
-              <span className="font-mono text-xs text-brand">.quest-card</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Typography Scale */}
-      <section className="space-y-6">
-        <h2 className="font-display font-bold text-xl text-text">5. Typography Scale</h2>
-        <div className="space-y-6 p-6 rounded-md bg-surface-1 border border-border shadow-card">
+        <h2 className="font-display font-bold text-xl text-text">9. Typography Stack</h2>
+        <div className="p-6 rounded-md bg-surface-1 border border-border space-y-6 shadow-card">
           <div className="pb-4 border-b border-border">
-            <span className="font-mono text-xs text-text-muted block mb-1">Display XL (72px / 800)</span>
-            <p className="font-display font-extrabold text-4xl sm:text-5xl md:text-6xl text-text leading-none tracking-tight">
-              Pixel Cartography
-            </p>
-          </div>
-
-          <div className="pb-4 border-b border-border">
-            <span className="font-mono text-xs text-text-muted block mb-1">Display L (48px / 800)</span>
-            <p className="font-display font-extrabold text-3xl sm:text-4xl text-text">
+            <span className="font-mono text-xs text-text-muted block mb-1">Display (48px / 800)</span>
+            <p className="font-display font-extrabold text-3xl sm:text-5xl text-text">
               Living Codebase Map
             </p>
           </div>
@@ -255,7 +477,7 @@ export default function DesignPage() {
 
       {/* Multilingual Support Preview */}
       <section className="space-y-4">
-        <h2 className="font-display font-bold text-xl text-text">6. Multilingual Fonts</h2>
+        <h2 className="font-display font-bold text-xl text-text">10. Multilingual Fonts</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="p-4 rounded-md bg-surface-1 border border-border shadow-card">
             <span className="font-mono text-xs text-text-muted block mb-2">Devanagari (Hindi)</span>
@@ -282,7 +504,7 @@ export default function DesignPage() {
 
       {/* Motion & Framer Motion Preview */}
       <section className="space-y-4">
-        <h2 className="font-display font-bold text-xl text-text">7. Motion Presets</h2>
+        <h2 className="font-display font-bold text-xl text-text">11. Motion Presets</h2>
         <motion.div
           variants={fadeUp}
           initial="hidden"

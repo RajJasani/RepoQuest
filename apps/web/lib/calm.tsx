@@ -23,3 +23,4 @@ export function CalmProvider({ children }: { children: ReactNode }) {
 }
 
 export const useCalmMode = () => useContext(CalmCtx);
+

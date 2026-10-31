@@ -68,3 +68,4 @@ export const fontVariables = [
   fontKannada.variable,
   fontTamil.variable,
 ].join(' ');
+
