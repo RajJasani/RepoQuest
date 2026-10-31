@@ -178,6 +178,46 @@ export const FileContentResponseSchema = z.object({
 export type FileContentResponse = z.infer<typeof FileContentResponseSchema>;
 
 // ==========================================
+// 5b. Chat & Ask the Repo
+// ==========================================
+export const ChatCitationSchema = z.object({
+  file: z.string(),
+  start_line: z.number(),
+  end_line: z.number(),
+  source_number: z.number().optional(),
+});
+export type ChatCitation = z.infer<typeof ChatCitationSchema>;
+
+export const ChatMessageSchema = z.object({
+  id: z.string(),
+  session_id: z.string(),
+  role: z.string(),
+  content: z.string(),
+  citations: z.array(ChatCitationSchema).default([]),
+  created_at: z.string().optional(),
+});
+export type ChatMessage = z.infer<typeof ChatMessageSchema>;
+
+export const ChatSessionResponseSchema = z.object({
+  id: z.string(),
+  repo_id: z.string(),
+  mode: z.string(),
+  language: z.string(),
+  created_at: z.string().optional(),
+});
+export type ChatSessionResponse = z.infer<typeof ChatSessionResponseSchema>;
+
+export const ChatSessionDetailResponseSchema = z.object({
+  id: z.string(),
+  repo_id: z.string(),
+  mode: z.string(),
+  language: z.string(),
+  created_at: z.string().optional(),
+  messages: z.array(ChatMessageSchema).default([]),
+});
+export type ChatSessionDetailResponse = z.infer<typeof ChatSessionDetailResponseSchema>;
+
+// ==========================================
 // 6. Issues & Triage
 // ==========================================
 export const IssueAnalysisSchema = z.object({
