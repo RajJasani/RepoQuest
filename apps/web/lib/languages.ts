@@ -24,3 +24,4 @@ export function getLanguageColor(language?: string | null): string {
   if (!language) return 'var(--brand)';
   return LANGUAGE_COLORS[language] || 'var(--brand)';
 }
+

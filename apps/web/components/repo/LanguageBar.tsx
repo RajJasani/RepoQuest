@@ -101,3 +101,4 @@ export function LanguageBar({ languages, className }: LanguageBarProps) {
     </div>
   );
 }
+

@@ -118,3 +118,4 @@ export function LogDrawer({ logs, isStreaming = false, className }: LogDrawerPro
     </div>
   );
 }
+

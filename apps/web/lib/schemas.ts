@@ -143,6 +143,40 @@ export const ArchitectureResponseSchema = z.object({
 });
 export type ArchitectureResponse = z.infer<typeof ArchitectureResponseSchema>;
 
+export const NeighborNodeSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  path: z.string(),
+  weight: z.number().default(1),
+});
+export type NeighborNode = z.infer<typeof NeighborNodeSchema>;
+
+export const ModuleDetailResponseSchema = z.object({
+  id: z.string(),
+  repo_id: z.string(),
+  name: z.string(),
+  path: z.string(),
+  summary: z.string().nullable().optional(),
+  key_files: z.array(z.string()).default([]),
+  entry_points: z.array(z.string()).default([]),
+  file_count: z.number().default(0),
+  files: z.array(z.string()).default([]),
+  neighbors: z.object({
+    incoming: z.array(NeighborNodeSchema).default([]),
+    outgoing: z.array(NeighborNodeSchema).default([]),
+  }).default({ incoming: [], outgoing: [] }),
+});
+export type ModuleDetailResponse = z.infer<typeof ModuleDetailResponseSchema>;
+
+export const FileContentResponseSchema = z.object({
+  path: z.string(),
+  content: z.string(),
+  total_lines: z.number().default(0),
+  start_line: z.number().default(1),
+  end_line: z.number().default(0),
+});
+export type FileContentResponse = z.infer<typeof FileContentResponseSchema>;
+
 // ==========================================
 // 6. Issues & Triage
 // ==========================================
