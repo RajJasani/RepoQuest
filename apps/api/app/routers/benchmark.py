@@ -182,3 +182,4 @@ async def cancel_benchmark(
     await db.refresh(run_record)
 
     return BenchmarkRunResponse.model_validate(run_record)
+

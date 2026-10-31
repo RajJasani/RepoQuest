@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+:root[data-theme='dusk'] {
+  --bg: #0A0D1A;
+  --surface-1: #10152A;
+  --surface-2: #171E3A;
+  --surface-3: #1F2848;
+  --border: #2A3560;
+  --text: #EDF1FF;
+  --text-muted: #9AA6CF;
+  --brand: #6C8CFF;
+  --brand-2: #9B6CFF;
+  --sky: #7EB6F0;
+  --amber: #FFB81C;
+  --rose: #F57C7C;
+  --flame: #FF3B1F;
+  --mint: #2DD4A7;
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+  --aurora: linear-gradient(120deg, var(--brand) 0%, var(--brand-2) 45%, var(--rose) 100%);
+}
+
+:root[data-theme='parchment'] {
+  --bg: #F3F1EA;
+  --surface-1: #FBFAF6;
+  --surface-2: #FFFFFF;
+  --surface-3: #ECE9DF;
+  --border: #1B1A17;
+  --text: #1B1A17;
+  --text-muted: #555A63;
+  --brand: #2748D8;
+  --brand-2: #6B3FD6;
+  --sky: #3F86D6;
+  --amber: #B26E00;
+  --rose: #D84F58;
+  --flame: #D42A10;
+  --mint: #0B8F6B;
+  --shadow-card: 4px 4px 0 var(--border);
+  --aurora: linear-gradient(120deg, var(--brand) 0%, var(--brand-2) 45%, var(--rose) 100%);
+}
+
+:root {
+  --dur-instant: 90ms;
+  --dur-fast: 150ms;
+  --dur-base: 240ms;
+  --dur-slow: 400ms;
+  --dur-epic: 800ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.quest-card {
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-120px, -60px, 0);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+[data-calm='1'] *, [data-calm='1'] *::before, [data-calm='1'] *::after {
+  animation: none !important;
+  transition-duration: 0.01ms !important;
+}

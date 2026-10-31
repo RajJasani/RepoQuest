@@ -39,3 +39,4 @@ class AuditUndoResponse(BaseModel):
     message: str
     removed_labels: list[str]
     undone: bool
+
