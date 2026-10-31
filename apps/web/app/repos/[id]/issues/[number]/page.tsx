@@ -2,25 +2,12 @@
 
 import React from 'react';
 import { useParams } from 'next/navigation';
-import { AppShell } from '@/components/layout/AppShell';
-import { EmptyState } from '@/components/states/EmptyState';
+import { TriageInbox } from '@/components/triage/TriageInbox';
 
 export default function IssueDetailPage() {
   const params = useParams();
   const repoId = String(params.id || '');
-  const issueNum = String(params.number || '');
+  const issueNumber = parseInt(String(params.number || '0'), 10) || undefined;
 
-  return (
-    <AppShell>
-      <div className="py-12">
-        <EmptyState
-          title={`Issue #${issueNum} Detail`}
-          description="Detailed AI analysis card, duplicate candidates, and maintainer reply draft."
-          actionLabel="Back to Triage Inbox"
-          actionHref={`/repos/${repoId}/issues`}
-          pipState="idle"
-        />
-      </div>
-    </AppShell>
-  );
+  return <TriageInbox repoId={repoId} initialIssueNumber={issueNumber} />;
 }

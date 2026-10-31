@@ -227,7 +227,13 @@ export const IssueAnalysisSchema = z.object({
   labels: z.array(z.string()).default([]),
   summary: z.string().nullable().optional(),
   missing_info: z.array(z.string()).default([]),
-  duplicates: z.array(z.record(z.string(), z.any())).default([]),
+  duplicates: z.array(
+    z.object({
+      number: z.number(),
+      similarity: z.number().default(0),
+      reason: z.string().optional(),
+    })
+  ).default([]),
   good_first_issue_score: z.number().nullable().optional(),
   suggested_reply: z.string().nullable().optional(),
   confidence: z.number().nullable().optional(),
