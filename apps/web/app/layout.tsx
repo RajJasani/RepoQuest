@@ -4,6 +4,8 @@ import { fontVariables } from '@/lib/fonts';
 import { ThemeProvider } from '@/components/theme-provider';
 import { CalmProvider } from '@/lib/calm';
 import { MotionProvider } from '@/components/motion-provider';
+import { QueryProvider } from '@/components/query-provider';
+import { SettingsProvider } from '@/lib/settings-context';
 import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
@@ -25,12 +27,16 @@ export default function RootLayout({
           themes={['dusk', 'parchment']}
           enableSystem={false}
         >
-          <CalmProvider>
-            <MotionProvider>
-              {children}
-              <Toaster richColors position="bottom-right" />
-            </MotionProvider>
-          </CalmProvider>
+          <QueryProvider>
+            <SettingsProvider>
+              <CalmProvider>
+                <MotionProvider>
+                  {children}
+                  <Toaster richColors position="bottom-right" />
+                </MotionProvider>
+              </CalmProvider>
+            </SettingsProvider>
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>

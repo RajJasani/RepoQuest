@@ -1,21 +1,34 @@
+'use client';
+
+import React from 'react';
+import { AppShell } from '@/components/layout/AppShell';
+import { EmptyState } from '@/components/states/EmptyState';
+import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-8 text-center">
-      <div className="max-w-md w-full p-8 rounded-lg bg-surface-1 border border-border quest-card shadow-card">
-        <h1 className="font-display font-bold text-3xl mb-4 text-text">RepoQuest</h1>
-        <p className="text-text-muted mb-6">
-          Help maintainers keep up. Help newcomers get started.
-        </p>
-        <Link
-          href="/design"
-          className="inline-flex items-center justify-center px-4 py-2 font-medium rounded-md bg-brand text-bg hover:opacity-90 transition-opacity"
-        >
-          View Design System (/design)
-        </Link>
+    <AppShell>
+      <div className="py-12 max-w-xl mx-auto space-y-6">
+        <EmptyState
+          title="RepoQuest"
+          description="Help maintainers keep up. Help newcomers get started. 100% offline local-first AI assistant for open source repositories."
+          actionComponent={
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+              <Link href="/repos">
+                <Button variant="primary">Explore Repositories</Button>
+              </Link>
+              <Link href="/setup">
+                <Button variant="secondary">Setup Wizard</Button>
+              </Link>
+              <Link href="/design">
+                <Button variant="ghost">Design System</Button>
+              </Link>
+            </div>
+          }
+          pipState="idle"
+        />
       </div>
-    </main>
+    </AppShell>
   );
 }
-
