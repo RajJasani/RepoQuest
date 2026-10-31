@@ -102,9 +102,15 @@ export const TreeNodeSchema: z.ZodType<TreeNode> = z.lazy(() =>
   })
 );
 
-export const FileTreeResponseSchema = z.object({
-  tree: z.array(TreeNodeSchema).default([]),
-});
+export const TreeNodesListSchema = z.array(TreeNodeSchema);
+export type TreeNodesList = z.infer<typeof TreeNodesListSchema>;
+
+export const FileTreeResponseSchema = z.union([
+  z.object({
+    tree: z.array(TreeNodeSchema).default([]),
+  }),
+  z.array(TreeNodeSchema),
+]);
 export type FileTreeResponse = z.infer<typeof FileTreeResponseSchema>;
 
 // ==========================================

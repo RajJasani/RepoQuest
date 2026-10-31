@@ -156,3 +156,4 @@ export function PixelQuestMap({ className }: { className?: string }) {
 }
 
 export default PixelQuestMap;
+

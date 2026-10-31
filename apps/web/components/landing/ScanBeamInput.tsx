@@ -167,3 +167,4 @@ export function ScanBeamInput({
 }
 
 export default ScanBeamInput;
+
